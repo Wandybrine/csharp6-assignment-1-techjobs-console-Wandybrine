@@ -44,11 +44,32 @@ namespace TechJobsConsoleAutograded6
         //TODO: Complete the FindByValue method
         public static List<Dictionary<string, string>> FindByValue(string value)
         {
-            // load data, if not already loaded
             LoadData();
 
-            return null;
+            List<Dictionary<string, string>> matchingJobs = new List<Dictionary<string, string>>();
+
+            foreach (var job in AllJobs)
+            {
+                bool isJobAdded = false; // is job already added?
+
+                foreach (var valuePair in job)
+                {
+                    if (valuePair.Value.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        // check if this job is already added
+                        if (!isJobAdded)
+                        {
+                            matchingJobs.Add(job);
+                            isJobAdded = true;
+                        }
+                        break; // don't keep searching other columns for job
+                    }
+                }
+            }
+
+            return matchingJobs;
         }
+
 
         /**
          * Returns results of search the jobs data by key/value, using
@@ -70,7 +91,7 @@ namespace TechJobsConsoleAutograded6
 
 
                 //TODO: Make search case-insensitive
-                if (aValue.Contains(value))
+                if (aValue.Contains(value, StringComparison.OrdinalIgnoreCase))
                 {
                     jobs.Add(row);
                 }

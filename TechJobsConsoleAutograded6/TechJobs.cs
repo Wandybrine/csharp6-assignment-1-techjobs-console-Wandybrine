@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TechJobsConsoleAutograded6
 {
@@ -59,12 +60,14 @@ namespace TechJobsConsoleAutograded6
 
                     // What is their search term?
                     Console.WriteLine(Environment.NewLine + "Search term: ");
-                    string searchTerm = Console.ReadLine();
+                    string searchTerm = Console.ReadLine().ToLower();
 
                     // Fetch results
+                    // call findbyvalue here
                     if (columnChoice.Equals("all"))
                     {
-                        Console.WriteLine("Search all fields not yet implemented.");
+                        List<Dictionary<string, string>> searchResults = JobData.FindByValue(searchTerm);
+                        PrintJobs(searchResults);
                     }
                     else
                     {
@@ -135,7 +138,21 @@ namespace TechJobsConsoleAutograded6
         // TODO: complete the PrintJobs method.
         public void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-            Console.WriteLine("PrintJobs is not implemented yet");
+            if (someJobs.Count == 0)
+            {
+                Console.WriteLine("No results");
+                return;
+            }
+
+            foreach (var job in someJobs)
+            {
+                Console.WriteLine($"{Environment.NewLine}*****");
+                foreach (var valuePair in job)
+                {
+                    Console.WriteLine($"{valuePair.Key}: {valuePair.Value}");
+                }
+                Console.WriteLine("*****");
+            }
         }
     }
 }
